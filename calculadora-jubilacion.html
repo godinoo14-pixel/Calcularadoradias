@@ -38,8 +38,10 @@ const pd=id=>{const s=document.getElementById(id).value;if(!s)return null;const 
 const fmt=d=>d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const diff=(a,b)=>Math.round((Date.UTC(b.getFullYear(),b.getMonth(),b.getDate())-Date.UTC(a.getFullYear(),a.getMonth(),a.getDate()))/864e5);
-function hol(){const t=(document.getElementById('f')||{value:''}).value;const s=new Set();t.split(/[\s,;]+/).forEach(x=>{const m=x.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);if(m)s.add(m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'));});return s;}
+const NAT=['2026-01-01','2026-01-06','2026-04-03','2026-05-01','2026-08-15','2026-10-12','2026-12-08','2026-12-25','2027-01-01','2027-01-06','2027-03-26','2027-05-01','2027-10-12','2027-11-01','2027-12-06','2027-12-08','2027-12-25'];
+function hol(){const t=(document.getElementById('f')||{value:''}).value;const s=new Set();const nc=document.getElementById('nac');if(nc&&nc.checked)NAT.forEach(x=>s.add(x));t.split(/[\s,;]+/).forEach(x=>{const m=x.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);if(m)s.add(m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'));});return s;}
 const today=new Date();document.querySelectorAll('input[type=date][data-today]').forEach(e=>e.value=iso(today));
+setTimeout(()=>document.querySelectorAll('.card input,.card select,.card textarea').forEach(e=>e.addEventListener(e.tagName=='SELECT'||e.type=='checkbox'?'change':'input',()=>{if(typeof calc==='function')try{calc();}catch(x){}})),0);
 const RQ={2013:[781,423],2014:[782,426],2015:[783,429],2016:[784,432],2017:[785,435],2018:[786,438],2019:[788,441],2020:[790,444],2021:[792,447],2022:[794,450],2023:[796,453],2024:[798,456],2025:[800,459],2026:[802,459]};
 const rq=y=>y<2013?[780,0]:(RQ[y]||[804,462]);
 const am=(d,n)=>{const y=d.getFullYear(),m=d.getMonth()+n,t=new Date(y,m,1),dim=new Date(t.getFullYear(),t.getMonth()+1,0).getDate();return new Date(t.getFullYear(),t.getMonth(),Math.min(d.getDate(),dim));};
